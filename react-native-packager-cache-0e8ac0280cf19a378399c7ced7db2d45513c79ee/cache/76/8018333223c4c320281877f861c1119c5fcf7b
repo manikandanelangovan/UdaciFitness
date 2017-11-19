@@ -1,0 +1,12 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var purple = exports.purple = '#292477';
+var gray = exports.gray = '#757575';
+var black = exports.black = '#000000';
+var red = exports.red = '#b71845';
+var orange = exports.orange = '#f26f28';
+var blue = exports.blue = '#4e4cb8';
+var lightPurp = exports.lightPurp = '#7c53c3';
+var pink = exports.pink = '#b93fb3';
+var white = exports.white = '#fff';

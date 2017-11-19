@@ -1,0 +1,166 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _react = require('react');
+
+var _react2 = babelHelpers.interopRequireDefault(_react);
+
+var _reactNative = require('react-native');
+
+var _helpers = require('../utils/helpers');
+
+var _UdaciSlider = require('./UdaciSlider');
+
+var _UdaciSlider2 = babelHelpers.interopRequireDefault(_UdaciSlider);
+
+var _UdaciStepper = require('./UdaciStepper');
+
+var _UdaciStepper2 = babelHelpers.interopRequireDefault(_UdaciStepper);
+
+var _DateHeader = require('./DateHeader');
+
+var _DateHeader2 = babelHelpers.interopRequireDefault(_DateHeader);
+
+var _vectorIcons = require('@expo/vector-icons');
+
+var _TextButton = require('./TextButton');
+
+var _TextButton2 = babelHelpers.interopRequireDefault(_TextButton);
+
+function SubmitButton(_ref) {
+  var onPress = _ref.onPress;
+
+  return _react2.default.createElement(
+    _reactNative.TouchableOpacity,
+    { onPress: onPress },
+    _react2.default.createElement(
+      _reactNative.Text,
+      null,
+      'SUBMIT'
+    )
+  );
+}
+
+var AddEntry = function (_Component) {
+  babelHelpers.inherits(AddEntry, _Component);
+
+  function AddEntry() {
+    var _ref2;
+
+    var _temp, _this, _ret;
+
+    babelHelpers.classCallCheck(this, AddEntry);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref2 = AddEntry.__proto__ || Object.getPrototypeOf(AddEntry)).call.apply(_ref2, [this].concat(args))), _this), _this.state = {
+      run: 0,
+      bike: 0,
+      swim: 0,
+      sleep: 0,
+      eat: 0
+    }, _this.increment = function (metric) {
+      var _getMetricMetaInfo = (0, _helpers.getMetricMetaInfo)(metric),
+          max = _getMetricMetaInfo.max,
+          step = _getMetricMetaInfo.step;
+
+      _this.setState(function (state) {
+        var count = state[metric] + step;
+
+        return babelHelpers.extends({}, state, babelHelpers.defineProperty({}, metric, count > max ? max : count));
+      });
+    }, _this.decrement = function (metric) {
+      _this.setState(function (state) {
+        var count = state[metric] - (0, _helpers.getMetricMetaInfo)(metric).step;
+
+        return babelHelpers.extends({}, state, babelHelpers.defineProperty({}, metric, count < 0 ? 0 : count));
+      });
+    }, _this.slide = function (metric, value) {
+      _this.setState(function () {
+        return babelHelpers.defineProperty({}, metric, value);
+      });
+    }, _this.submit = function () {
+      _this.setState(function () {
+        return {
+          run: 10,
+          bike: 5,
+          swim: 6,
+          sleep: 30,
+          eat: 2
+        };
+      });
+    }, _this.reset = function () {
+      var key = _this.timeToString();
+    }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+  }
+
+  babelHelpers.createClass(AddEntry, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var metaInfo = (0, _helpers.getMetricMetaInfo)();
+      if (true) {
+        return _react2.default.createElement(
+          _reactNative.View,
+          null,
+          _react2.default.createElement(_vectorIcons.Ionicons, {
+            name: 'ios-happy-outline',
+            size: 100
+          }),
+          _react2.default.createElement(
+            _reactNative.Text,
+            null,
+            'You already logged your information for today'
+          ),
+          _react2.default.createElement(
+            _TextButton2.default,
+            { onPress: this.reset },
+            'Reset'
+          )
+        );
+      }
+      return _react2.default.createElement(
+        _reactNative.View,
+        null,
+        _react2.default.createElement(_DateHeader2.default, { date: new Date().toLocaleDateString() }),
+        Object.keys(metaInfo).map(function (key) {
+          var _metaInfo$key = metaInfo[key],
+              getIcon = _metaInfo$key.getIcon,
+              type = _metaInfo$key.type,
+              rest = babelHelpers.objectWithoutProperties(_metaInfo$key, ['getIcon', 'type']);
+
+          var value = _this2.state[key];
+
+          return _react2.default.createElement(
+            _reactNative.View,
+            { key: key },
+            getIcon(),
+            type === 'slider' ? _react2.default.createElement(_UdaciSlider2.default, babelHelpers.extends({
+              value: value,
+              onChange: function onChange(value) {
+                return _this2.slide(key, value);
+              }
+            }, rest)) : _react2.default.createElement(_UdaciStepper2.default, babelHelpers.extends({
+              value: value,
+              onIncrement: function onIncrement() {
+                return _this2.increment(key);
+              },
+              onDecrement: function onDecrement() {
+                return _this2.decrement(key);
+              }
+            }, rest))
+          );
+        }),
+        _react2.default.createElement(SubmitButton, { onPress: this.submit })
+      );
+    }
+  }]);
+  return AddEntry;
+}(_react.Component);
+
+exports.default = AddEntry;

@@ -1,0 +1,70 @@
+
+
+'use strict';
+
+var invariant = require('fbjs/lib/invariant');
+var uuid = require('uuid');
+
+var _require = require('NativeModules'),
+    BlobModule = _require.BlobModule;
+
+var Blob = function () {
+  babelHelpers.createClass(Blob, null, [{
+    key: 'create',
+    value: function create(props) {
+      return babelHelpers.extends(Object.create(Blob.prototype), props);
+    }
+  }]);
+
+  function Blob(parts, options) {
+    babelHelpers.classCallCheck(this, Blob);
+
+    var blobId = uuid();
+    var size = 0;
+    parts.forEach(function (part) {
+      invariant(part instanceof Blob, 'Can currently only create a Blob from other Blobs');
+      size += part.size;
+    });
+    BlobModule.createFromParts(parts, blobId);
+    return Blob.create({
+      blobId: blobId,
+      offset: 0,
+      size: size
+    });
+  }
+
+  babelHelpers.createClass(Blob, [{
+    key: 'slice',
+    value: function slice(start, end) {
+      var offset = this.offset;
+      var size = this.size;
+      if (typeof start === 'number') {
+        if (start > size) {
+          start = size;
+        }
+        offset += start;
+        size -= start;
+
+        if (typeof end === 'number') {
+          if (end < 0) {
+            end = this.size + end;
+          }
+          size = end - start;
+        }
+      }
+      return Blob.create({
+        blobId: this.blobId,
+        offset: offset,
+        size: size
+      });
+    }
+  }, {
+    key: 'close',
+    value: function close() {
+      BlobModule.release(this.blobId);
+    }
+  }]);
+  return Blob;
+}();
+
+module.exports = Blob;

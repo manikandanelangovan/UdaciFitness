@@ -1,0 +1,54 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = UdaciStepper;
+
+var _react = require('react');
+
+var _react2 = babelHelpers.interopRequireDefault(_react);
+
+var _reactNative = require('react-native');
+
+var _vectorIcons = require('@expo/vector-icons');
+
+function UdaciStepper(_ref) {
+  var max = _ref.max,
+      unit = _ref.unit,
+      step = _ref.step,
+      value = _ref.value,
+      onDecrement = _ref.onDecrement,
+      onIncrement = _ref.onIncrement;
+
+  return _react2.default.createElement(
+    _reactNative.View,
+    null,
+    _react2.default.createElement(
+      _reactNative.View,
+      null,
+      _react2.default.createElement(
+        _reactNative.TouchableOpacity,
+        { onPress: onDecrement },
+        _react2.default.createElement(_vectorIcons.FontAwesome, { name: 'minus', size: 30, color: 'black' })
+      ),
+      _react2.default.createElement(
+        _reactNative.TouchableOpacity,
+        { onPress: onIncrement },
+        _react2.default.createElement(_vectorIcons.FontAwesome, { name: 'plus', size: 30, color: 'black' })
+      )
+    ),
+    _react2.default.createElement(
+      _reactNative.View,
+      null,
+      _react2.default.createElement(
+        _reactNative.Text,
+        null,
+        value
+      ),
+      _react2.default.createElement(
+        _reactNative.Text,
+        null,
+        unit
+      )
+    )
+  );
+}

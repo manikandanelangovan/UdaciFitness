@@ -1,0 +1,82 @@
+
+'use strict';
+
+var NativeMethodsMixin = require('NativeMethodsMixin');
+var PropTypes = require('prop-types');
+var React = require('React');
+var StyleSheet = require('StyleSheet');
+var ViewPropTypes = require('ViewPropTypes');
+
+var createReactClass = require('create-react-class');
+var requireNativeComponent = require('requireNativeComponent');
+
+var CheckBox = createReactClass({
+  displayName: 'CheckBox',
+  propTypes: babelHelpers.extends({}, ViewPropTypes, {
+    value: PropTypes.bool,
+
+    disabled: PropTypes.bool,
+
+    onChange: PropTypes.func,
+
+    onValueChange: PropTypes.func,
+
+    testID: PropTypes.string
+  }),
+
+  getDefaultProps: function getDefaultProps() {
+    return {
+      value: false,
+      disabled: false
+    };
+  },
+
+  mixins: [NativeMethodsMixin],
+
+  _rctCheckBox: {},
+  _onChange: function _onChange(event) {
+    this._rctCheckBox.setNativeProps({ value: this.props.value });
+
+    this.props.onChange && this.props.onChange(event);
+    this.props.onValueChange && this.props.onValueChange(event.nativeEvent.value);
+  },
+
+  render: function render() {
+    var _this = this;
+
+    var props = babelHelpers.extends({}, this.props);
+    props.onStartShouldSetResponder = function () {
+      return true;
+    };
+    props.onResponderTerminationRequest = function () {
+      return false;
+    };
+    props.enabled = !this.props.disabled;
+    props.on = this.props.value;
+    props.style = [styles.rctCheckBox, this.props.style];
+
+    return React.createElement(RCTCheckBox, babelHelpers.extends({}, props, {
+      ref: function ref(_ref) {
+        _this._rctCheckBox = _ref;
+      },
+      onChange: this._onChange
+    }));
+  }
+});
+
+var styles = StyleSheet.create({
+  rctCheckBox: {
+    height: 32,
+    width: 32
+  }
+});
+
+var RCTCheckBox = requireNativeComponent('AndroidCheckBox', CheckBox, {
+  nativeOnly: {
+    onChange: true,
+    on: true,
+    enabled: true
+  }
+});
+
+module.exports = CheckBox;

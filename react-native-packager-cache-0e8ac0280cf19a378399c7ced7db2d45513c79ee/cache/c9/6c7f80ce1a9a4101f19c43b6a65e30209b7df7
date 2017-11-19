@@ -1,0 +1,58 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = registerRootComponent;
+
+var _react = require('react');
+
+var _react2 = babelHelpers.interopRequireDefault(_react);
+
+var _reactNative = require('react-native');
+
+var _Font = require('../Font');
+
+var _Notifications = require('../Notifications');
+
+var _Notifications2 = babelHelpers.interopRequireDefault(_Notifications);
+
+var _RootErrorBoundary = require('./RootErrorBoundary');
+
+var _RootErrorBoundary2 = babelHelpers.interopRequireDefault(_RootErrorBoundary);
+
+function wrapWithExpoRoot(AppRootComponent) {
+  return function (_React$Component) {
+    babelHelpers.inherits(ExpoRootComponent, _React$Component);
+
+    function ExpoRootComponent() {
+      babelHelpers.classCallCheck(this, ExpoRootComponent);
+      return babelHelpers.possibleConstructorReturn(this, (ExpoRootComponent.__proto__ || Object.getPrototypeOf(ExpoRootComponent)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(ExpoRootComponent, [{
+      key: 'componentWillMount',
+      value: function componentWillMount() {
+        _reactNative.StyleSheet.setStyleAttributePreprocessor('fontFamily', _Font.processFontFamily);
+
+        if (this.props.exp.notification) {
+          _Notifications2.default._setInitialNotification(this.props.exp.notification);
+        }
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        return _react2.default.createElement(
+          _RootErrorBoundary2.default,
+          null,
+          _react2.default.createElement(AppRootComponent, this.props)
+        );
+      }
+    }]);
+    return ExpoRootComponent;
+  }(_react2.default.Component);
+}
+
+function registerRootComponent(component) {
+  _reactNative.AppRegistry.registerComponent('main', function () {
+    return wrapWithExpoRoot(component);
+  });
+}

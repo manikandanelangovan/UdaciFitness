@@ -1,0 +1,72 @@
+var _class, _temp2;
+
+var PropTypes = require('prop-types');
+var React = require('React');
+var StyleSheet = require('StyleSheet');
+var View = require('View');
+var ViewPropTypes = require('ViewPropTypes');
+var requireNativeComponent = require('requireNativeComponent');
+
+var MaskedViewIOS = (_temp2 = _class = function (_React$Component) {
+  babelHelpers.inherits(MaskedViewIOS, _React$Component);
+
+  function MaskedViewIOS() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    babelHelpers.classCallCheck(this, MaskedViewIOS);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = MaskedViewIOS.__proto__ || Object.getPrototypeOf(MaskedViewIOS)).call.apply(_ref, [this].concat(args))), _this), _this._hasWarnedInvalidRenderMask = false, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+  }
+
+  babelHelpers.createClass(MaskedViewIOS, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          maskElement = _props.maskElement,
+          children = _props.children,
+          otherViewProps = babelHelpers.objectWithoutProperties(_props, ['maskElement', 'children']);
+
+
+      if (!React.isValidElement(maskElement)) {
+        if (!this._hasWarnedInvalidRenderMask) {
+          console.warn('MaskedView: Invalid `maskElement` prop was passed to MaskedView. ' + 'Expected a React Element. No mask will render.');
+          this._hasWarnedInvalidRenderMask = true;
+        }
+        return React.createElement(
+          View,
+          otherViewProps,
+          children
+        );
+      }
+
+      return React.createElement(
+        RCTMaskedView,
+        otherViewProps,
+        React.createElement(
+          View,
+          { pointerEvents: 'none', style: StyleSheet.absoluteFill },
+          maskElement
+        ),
+        children
+      );
+    }
+  }]);
+  return MaskedViewIOS;
+}(React.Component), _class.propTypes = babelHelpers.extends({}, ViewPropTypes, {
+  maskElement: PropTypes.element.isRequired
+}), _temp2);
+
+
+var RCTMaskedView = requireNativeComponent('RCTMaskedView', {
+  name: 'RCTMaskedView',
+  displayName: 'RCTMaskedView',
+  propTypes: babelHelpers.extends({}, ViewPropTypes)
+});
+
+module.exports = MaskedViewIOS;

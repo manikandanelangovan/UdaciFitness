@@ -1,0 +1,113 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _react = require('react');
+
+var _react2 = babelHelpers.interopRequireDefault(_react);
+
+var _reactNative = require('react-native');
+
+var _AppLoading = require('./AppLoading');
+
+var RootErrorBoundary = function (_React$Component) {
+  babelHelpers.inherits(RootErrorBoundary, _React$Component);
+
+  function RootErrorBoundary() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    babelHelpers.classCallCheck(this, RootErrorBoundary);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = RootErrorBoundary.__proto__ || Object.getPrototypeOf(RootErrorBoundary)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      error: null
+    }, _this._appLoadingIsMounted = false, _this._subscribeToGlobalErrors = function () {
+      _this._appLoadingIsMounted = true;
+
+      var originalErrorHandler = ErrorUtils.getGlobalHandler();
+
+      ErrorUtils.setGlobalHandler(function (error, isFatal) {
+        if (_this._appLoadingIsMounted) {
+          _reactNative.NativeModules.ExponentAppLoadingManager && _reactNative.NativeModules.ExponentAppLoadingManager.finishedAsync();
+
+          if (isFatal) {
+            _this.setState({ error: error });
+          }
+        }
+
+        originalErrorHandler(error, isFatal);
+      });
+    }, _this._unsubscribeFromGlobalErrors = function () {
+      _this._appLoadingIsMounted = false;
+    }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+  }
+
+  babelHelpers.createClass(RootErrorBoundary, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      if (__DEV__) {
+        (0, _AppLoading.getAppLoadingLifecycleEmitter)().once('componentDidMount', this._subscribeToGlobalErrors);
+        (0, _AppLoading.getAppLoadingLifecycleEmitter)().once('componentWillUnmount', this._unsubscribeFromGlobalErrors);
+      }
+    }
+  }, {
+    key: 'unstable_handleError',
+    value: function unstable_handleError(error) {
+      if (this._appLoadingIsMounted) {
+        _reactNative.NativeModules.ExponentAppLoadingManager && _reactNative.NativeModules.ExponentAppLoadingManager.finishedAsync();
+      }
+
+      console.error(error);
+
+      if (__DEV__) {
+        this.setState({ error: error });
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      if (this.state.error) {
+        var paragraphStyle = {
+          marginBottom: 10,
+          textAlign: 'center',
+          marginHorizontal: 30,
+          maxWidth: 350,
+          fontSize: 15,
+          color: '#888'
+        };
+
+        return _react2.default.createElement(
+          _reactNative.View,
+          {
+            style: { flex: 1, alignItems: 'center', justifyContent: 'center' } },
+          _react2.default.createElement(
+            _reactNative.Text,
+            { style: { fontSize: 40, marginBottom: 20 } },
+            '\u26A0\uFE0F'
+          ),
+          _react2.default.createElement(
+            _reactNative.Text,
+            { style: [paragraphStyle, { color: '#000' }] },
+            'A fatal error was encountered while rendering the root component.'
+          ),
+          _react2.default.createElement(
+            _reactNative.Text,
+            { style: paragraphStyle },
+            'Review your application logs for more information, and reload the app when the issue is resolved. In production, your app would have crashed.'
+          )
+        );
+      } else {
+        return this.props.children;
+      }
+    }
+  }]);
+  return RootErrorBoundary;
+}(_react2.default.Component);
+
+exports.default = RootErrorBoundary;

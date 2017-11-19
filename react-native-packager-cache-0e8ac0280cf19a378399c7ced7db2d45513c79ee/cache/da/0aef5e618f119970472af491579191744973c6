@@ -1,0 +1,21 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _DeviceSensor2 = require('./DeviceSensor');
+
+var _DeviceSensor3 = babelHelpers.interopRequireDefault(_DeviceSensor2);
+
+var ThreeAxisSensor = function (_DeviceSensor) {
+  babelHelpers.inherits(ThreeAxisSensor, _DeviceSensor);
+
+  function ThreeAxisSensor() {
+    babelHelpers.classCallCheck(this, ThreeAxisSensor);
+    return babelHelpers.possibleConstructorReturn(this, (ThreeAxisSensor.__proto__ || Object.getPrototypeOf(ThreeAxisSensor)).apply(this, arguments));
+  }
+
+  return ThreeAxisSensor;
+}(_DeviceSensor3.default);
+
+exports.default = ThreeAxisSensor;

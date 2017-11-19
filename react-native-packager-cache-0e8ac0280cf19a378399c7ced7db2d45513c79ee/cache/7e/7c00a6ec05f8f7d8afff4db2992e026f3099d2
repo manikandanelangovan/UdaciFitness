@@ -1,0 +1,51 @@
+
+'use strict';
+
+var AnimatedValue = require('./AnimatedValue');
+var AnimatedNode = require('./AnimatedNode');
+
+var AnimatedTracking = function (_AnimatedNode) {
+  babelHelpers.inherits(AnimatedTracking, _AnimatedNode);
+
+  function AnimatedTracking(value, parent, animationClass, animationConfig, callback) {
+    babelHelpers.classCallCheck(this, AnimatedTracking);
+
+    var _this = babelHelpers.possibleConstructorReturn(this, (AnimatedTracking.__proto__ || Object.getPrototypeOf(AnimatedTracking)).call(this));
+
+    _this._value = value;
+    _this._parent = parent;
+    _this._animationClass = animationClass;
+    _this._animationConfig = animationConfig;
+    _this._callback = callback;
+    _this.__attach();
+    return _this;
+  }
+
+  babelHelpers.createClass(AnimatedTracking, [{
+    key: '__getValue',
+    value: function __getValue() {
+      return this._parent.__getValue();
+    }
+  }, {
+    key: '__attach',
+    value: function __attach() {
+      this._parent.__addChild(this);
+    }
+  }, {
+    key: '__detach',
+    value: function __detach() {
+      this._parent.__removeChild(this);
+      babelHelpers.get(AnimatedTracking.prototype.__proto__ || Object.getPrototypeOf(AnimatedTracking.prototype), '__detach', this).call(this);
+    }
+  }, {
+    key: 'update',
+    value: function update() {
+      this._value.animate(new this._animationClass(babelHelpers.extends({}, this._animationConfig, {
+        toValue: this._animationConfig.toValue.__getValue()
+      })), this._callback);
+    }
+  }]);
+  return AnimatedTracking;
+}(AnimatedNode);
+
+module.exports = AnimatedTracking;
