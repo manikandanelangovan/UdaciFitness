@@ -109,7 +109,7 @@ class AddEntry extends Component {
                 <View sytle={styles.center}>
                     <Ionicons 
                         name={Platform.OS === 'ios' ? 'ios-happy-outline' : 'md-happy'}
-                        size={100}
+                        size={100} 
                     />
                     <Text>You already logged your information for today</Text>
                     <TextButton style={{padding: 10}} onPress={this.reset}>
@@ -157,6 +157,11 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: white
   },
+  row: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+  },
   iosSubmitBtn: {
     padding: 10,
     backgroundColor: purple,
@@ -181,18 +186,13 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: 'center',
   },
-  row: {
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
-  },
   center: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 30,
     marginRight: 30,
-  }
+  },
 })
 
 function mapStateToProps (state) {
